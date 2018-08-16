@@ -18,16 +18,17 @@ def calc_j(n, k, a):
 
 
 freq = np.linspace(100, 10000, 100)
+c = 347   # sound speed
 k = 2 * np.pi * freq / c
 a = 0.05
-c = 347  # sound speed
 
 plt.figure()
-ax1 = plt.subplot(211)
-ax2 = plt.subplot(212)
+ax1 = plt.subplot(111)
+#ax2 = plt.subplot(212)
 for order in range(7):
     b = calc_j(order, k, a)
     ax1.plot(freq, np.abs(b), label='order{}'.format(order))
-    ax2.plot(freq, np.angle(b), label='order{}'.format(order))
-#ax1.legend()
+    #ax2.plot(freq, np.angle(b), label='order{}'.format(order))
+ax1.legend()
+plt.savefig("images/plot_b")
 #ax2.legend()
