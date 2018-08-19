@@ -12,10 +12,11 @@ sys.path.append('/Users/mizun524/research/pfiles')
 from mymodules import cart2sph, sph_harm_real
 
 # 0. values
-order = 2
+order = 3
 order_in = 40
-freq = 8000
-inc_dir = np.array([0, np.pi / 2])
+freq = 4000
+inc_dir = np.array([[0, np.pi / 2], [np.pi / 2, np.pi / 2]])
+xdb = 0
 
 # 1. import data
 # import the micophones arrangement
@@ -50,15 +51,20 @@ b = np.array([calc_j(int(np.floor(np.sqrt(nn))), k, mPos_sph[0, 2])
 Y_mic_in = np.array([sph_harm(m, n, mPos_sph[:, 0], mPos_sph[:, 1])
                   for n in range(order_in + 1) for m in range(-n, n + 1)])
 
-# calculate SH for incoming wave
-Y_in = np.array([sph_harm(m, n, inc_dir[0], inc_dir[1])
-                 for n in range(order_in + 1) for m in range(-n, n + 1)])
+p_in = np.zeros((mPos_sph.shape[0]), dtype='complex')
+for i in range(inc_dir.shape[0]):
+    # calculate SH for incoming wave
+    Y_in = np.array([sph_harm(m, n, inc_dir[i, 0], inc_dir[i, 1])
+                     for n in range(order_in + 1) for m in range(-n, n + 1)])
 
-# calculate microphone's input each order and degree
-pnm_in = np.array([b * Y_mic_in[:, idirs] * np.conjugate(Y_in)
-                   for idirs in range(mPos_sph.shape[0])])
-# calculate microphone's input
-p_in = np.sum(pnm_in, axis=1)
+    # calculate microphone's input each order and degree
+    pnm_in = np.array([b * Y_mic_in[:, idirs] * np.conjugate(Y_in)
+                    for idirs in range(mPos_sph.shape[0])])
+    # calculate microphone's input
+    if i==0:
+        p_in += np.sum(pnm_in, axis=1)
+    else:
+        p_in += np.sum(pnm_in, axis=1) * np.power(10, xdb/20)
 
 # add noise
 p_noise = np.random.rand(64) * np.max(p_in) * 3
@@ -115,3 +121,5 @@ plt.xlabel('azimuth', fontsize=14)
 plt.ylabel('elevation', fontsize=14)
 plt.colorbar()
 plt.axis('equal')
+plt.plot(inc_dir[:, 0] , inc_dir[:, 1], marker='x', markersize='14',linestyle='none')
+plt.savefig("images/sim_2s_o{}_azi{}".format(order, int(inc_dir[1, 0]/np.pi*180)))
