@@ -14,7 +14,7 @@
 # Reference:
 #   "Room reflections analysis with the use of spherical beamforming and wavelets"
 #       Use not wavelets but STFT in this program.
-#
+# written by PERE, Otani-Lab, Kyoto Univ.
 
 import numpy as np
 import numpy.matlib
@@ -26,6 +26,8 @@ from scipy.special import sph_harm, spherical_jn, spherical_yn
 
 import soundfile as sf
 
+import sys
+sys.path.append('/Users/mizun524/research/pfiles')
 from mymodules import cart2sph, sph_harm_real
 
 # 0. values

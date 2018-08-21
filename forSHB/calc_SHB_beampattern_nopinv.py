@@ -26,6 +26,8 @@ from scipy.special import sph_harm, spherical_jn, spherical_yn
 
 import soundfile as sf
 
+import sys
+sys.path.append('/Users/mizun524/research/pfiles')
 from mymodules import cart2sph, sph_harm_real
 
 # 0. values
