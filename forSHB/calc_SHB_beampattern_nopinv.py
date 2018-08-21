@@ -28,21 +28,20 @@ import soundfile as sf
 
 import sys
 sys.path.append('/Users/mizun524/research/pfiles')
-from mymodules import cart2sph, sph_harm_real
+from mymodules import cart2sph
 
 # 0. values
-order = 2
-freq_analyse = np.array([2000, 4000])
+order = 4
+freq_analyse = np.array([3500, 4000])
 
 
-# 1. import data
+# 1. import data %%
 # import lvlLin for calibration
-mic_lvl_mat = io.loadmat(
-    "../ViRealMic/ViRealMic1_lvl.mat")
+mic_lvl_mat = io.loadmat("../../ViRealMic/ViRealMic1_lvl.mat")
 lvlLin = np.array(mic_lvl_mat["lvlLin"])
 
 # import the micophones arrangement
-mPos_mat = io.loadmat("../ViRealMic/ViRealMic.mat")
+mPos_mat = io.loadmat("../../ViRealMic/ViRealMic.mat")
 mPos_cart = np.array(mPos_mat["Pmic"])
 # cartesian to spherical coordinate
 mPos_sph = np.zeros_like(mPos_cart)
@@ -50,9 +49,9 @@ mPos_sph[:, 0], mPos_sph[:, 1], mPos_sph[:, 2] = cart2sph(
     mPos_cart[:, 0], mPos_cart[:, 1], mPos_cart[:, 2])
 
 # import mesured IRs (P1, P2, P3)
-y1, Fs = sf.read("../ViRealMic/HardyHall_P01_FLT32_avg.wav")
-y2, Fs = sf.read("../ViRealMic/HardyHall_P02_FLT32_avg.wav")
-y3, Fs = sf.read("../ViRealMic/HardyHall_P03_FLT32_avg.wav")
+y1, Fs = sf.read("../../ViRealMic/HardyHall_P01_FLT32_avg.wav")
+y2, Fs = sf.read("../../ViRealMic/HardyHall_P02_FLT32_avg.wav")
+y3, Fs = sf.read("../../ViRealMic/HardyHall_P03_FLT32_avg.wav")
 
 # calibration (level adjustment among channels)
 y1_c = np.zeros_like(y1)
@@ -63,8 +62,7 @@ for ich in range(y1.shape[1]):
     y2_c[:, ich] = y2[:, ich] * lvlLin[ich]
     y3_c[:, ich] = y3[:, ich] * lvlLin[ich]
 
-
-# 2. STFT
+# 2. STFT %%
 nperseg = 256
 noverlap = 128
 nfft = 256
