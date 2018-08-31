@@ -37,10 +37,11 @@ def plot_SHB_result_decay(order, freq, place, time_s, time_e, ax):
     ax.plot(tE_s, E_s, 'g--')
     ax.plot(tE_e, E_e, 'g--')
     ax.set_xlim([0, 430. * 128. / 48000. * 1000.])
-    ax.set_ylim([-100., 5.])
+    ax.set_ylim([-80., 5.])
     ax.set_xlabel('time [ms]')
     ax.set_ylabel('E [dB]')
     ax.set_title("Energy decay curve (order{} {}Hz)".format(order, freq))
+    ax.set_aspect(8)
 
 
 if __name__ == '__main__':
