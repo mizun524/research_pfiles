@@ -1,5 +1,6 @@
 # transform from Cartesian to Spherical Coordinate
 # func : phi, theta, r = cart2sph(x, y, z)
+#   phi:azimuth, theta:inclination, r:radius
 #
 #reference:
 #   https://en.wikipedia.org/wiki/Spherical_coordinate_system
